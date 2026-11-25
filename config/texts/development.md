@@ -1,0 +1,1 @@
+Code lives on GitHub: https://github.com/overpressure. Changes come as pull requests; GOVERNANCE.md says who reviews what, CONTRIBUTING.md how. Want to bring another headset? Open an issue in overpressure/overpressure with the headset, its SoC and where your work is today. Decisions are made in issues and pull requests, not in chat: link the issue when you discuss one here.

@@ -1,0 +1,12 @@
+# Releases and warnings: only the team (25) and above post here.
+name: Announcements
+alias: "#overpressure-announcements:matrix.org"
+topic: >-
+  Releases, previews worth testing and important warnings. Read-only: questions go to General or Help
+icon: announcements
+also: [announcement, news, releases]
+suggested: true
+power_levels:
+  events_default: 25
+  notifications:
+    room: 25

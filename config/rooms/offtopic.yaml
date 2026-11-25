@@ -1,0 +1,7 @@
+# Everything else.
+name: Off-topic
+alias: "#overpressure-offtopic:matrix.org"
+topic: >-
+  Everything else: VR in general, other projects, show your setup. Be kind
+icon: offtopic
+also: [offtopic, random, chat, lounge]

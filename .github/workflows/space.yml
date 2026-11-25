@@ -1,0 +1,76 @@
+# Make the Matrix space match config/.
+#
+#   A change merged into main   applied at once; a room it can't find is only reported, never created
+#   Run by hand                 a dry run; "apply" changes it, "create" also creates the rooms it can't find
+#   Every day                   the icons alone, applied: brand's matrix/ changes outside this repository
+#   Every Monday                a dry run that fails when the space drifted from the settings (someone changed
+#                               a room in Element), so that someone looks; it changes nothing
+#
+# The result is the run's summary. The token is the environment matrix's secret MATRIX_ACCESS_TOKEN: the
+# access token of the account the space is run as, at level 100 in the space and every room. The environment
+# lets only main deploy, so a pull request's code never sees it.
+name: Space
+on:
+  push:
+    branches: [main]
+    paths:
+      - config/**
+      - matrix_space/**
+      - uv.lock
+      - .github/workflows/space.yml
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: "Change the space (unticked: only list what differs)"
+        type: boolean
+        default: false
+      create:
+        description: "Also create the rooms it can't find (check a dry run first: a room may exist under another name)"
+        type: boolean
+        default: false
+  schedule:
+    - cron: "17 5 * * *" # the icons
+    - cron: "47 5 * * 1" # the drift check
+
+permissions:
+  contents: read
+
+# One run at a time, none cancelled halfway: a second run waits and then finds what's left.
+concurrency:
+  group: space
+  cancel-in-progress: false
+
+jobs:
+  space:
+    if: github.repository == 'overpressure/matrix'
+    runs-on: ubuntu-latest
+    environment: matrix
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@18d369b23da25a81e9458561248e1aafff6a70fa # v10.3.1
+        with:
+          version: "0.13.4" # overpressure's
+      - run: uv sync --locked
+      - name: The space
+        env:
+          MATRIX_ACCESS_TOKEN: ${{ secrets.MATRIX_ACCESS_TOKEN }}
+          EVENT: ${{ github.event_name }}
+          SCHEDULE: ${{ github.event.schedule }}
+          APPLY: ${{ inputs.apply }}
+          CREATE: ${{ inputs.create }}
+        run: |
+          args=(--summary "$GITHUB_STEP_SUMMARY")
+          case "$EVENT" in
+            push) args+=(--apply) ;;
+            workflow_dispatch)
+              [ "$APPLY" != true ] || args+=(--apply)
+              [ "$CREATE" != true ] || args+=(--create) ;;
+            schedule)
+              case "$SCHEDULE" in
+                "17 5 * * *") args+=(--only-icons --apply) ;;
+                *) args+=(--fail-on-drift) ;;
+              esac ;;
+            *) echo "::error::not run by $EVENT"; exit 1 ;;
+          esac
+          uv run --locked python -m matrix_space "${args[@]}"

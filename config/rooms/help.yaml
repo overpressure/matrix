@@ -1,0 +1,10 @@
+# Installing and going back to stock, one thread per problem.
+name: Help
+alias: "#overpressure-help:matrix.org"
+topic: >-
+  Installing, upgrading and going back to stock. One thread per problem: your headset, your computer's OS,
+  your overpressure version
+icon: help
+also: [support, installhelp]
+suggested: true
+pin: texts/help.md

@@ -1,0 +1,11 @@
+# The first room: everything about overpressure, the welcome and the rules pinned.
+name: General
+alias: "#overpressure-general:matrix.org"
+topic: >-
+  Start here: everything about overpressure. Rules are pinned. Bugs and feature requests go to GitHub issues
+icon: general
+# Names it may have been created with, to find it when its address isn't set yet (letters and digits only).
+also: [lobby, welcome, overpressure]
+listed: true
+suggested: true
+pin: texts/welcome.md

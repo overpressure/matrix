@@ -1,0 +1,10 @@
+# The PICO 4's room (overpressure/phoenix).
+name: PICO 4
+alias: "#overpressure-phoenix:matrix.org"
+topic: >-
+  The PICO 4 on overpressure: games, tracking, controllers, Steam Link, Android apps, what works and what
+  doesn't. Bugs: github.com/overpressure/phoenix/issues
+icon: phoenix
+also: [pico4, pico, phoenix]
+# The team phoenix at 25 here, by its members' accounts.
+people: {}

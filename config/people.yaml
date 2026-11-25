@@ -1,0 +1,17 @@
+# The people's power levels, the same in the space and every room (a room's own people: are added to these).
+# Matrix has no roles, only a level per account and room. The levels follow the GitHub teams, by pull request:
+#
+#   100  admin      the organization's owners (and the account the workflow runs as)
+#    50  moderator  core and trusted helpers
+#    25  team       a headset's or SoC's team, in its own room (that room's people:)
+#
+# Everyone listed gets their level. Someone above 0 who isn't listed (raised by hand in Element) is only
+# reported in the run's summary, unless lower_unlisted is true: then they go back to 0. Accounts at or above
+# the workflow account's own level can't be changed by it either way, and are reported. The workflow's own
+# account always stays at 100, and a room's creator outranks every level from room version 12 on.
+
+lower_unlisted: false
+
+people: {}
+#  "@owner:matrix.org": 100
+#  "@moderator:matrix.org": 50

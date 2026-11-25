@@ -1,0 +1,10 @@
+# The Meta Quest 2's room (overpressure/hollywood).
+name: Meta Quest 2
+alias: "#overpressure-hollywood:matrix.org"
+topic: >-
+  The Meta Quest 2 on overpressure, in development: the kernel, the packages, the installer, what boots and
+  what doesn't. Bugs: github.com/overpressure/hollywood/issues
+icon: hollywood
+also: [quest2, quest, metaquest2, oculusquest2, hollywood]
+# The team hollywood at 25 here, by its members' accounts.
+people: {}

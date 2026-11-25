@@ -1,0 +1,35 @@
+# What the bot posts to a room by itself (python -m matrix_space.announce, the Announce workflow): each
+# release and each new headset once. Every post carries a mark naming what it announced, so the room itself
+# remembers what was posted: nothing is posted twice, and nothing is kept anywhere else.
+
+# The room it posts to: a key from rooms/.
+room: announcements
+
+# Nothing published (a release) or created (a headset's repository) before this is announced, so that the
+# first run doesn't post the whole history.
+since: "2026-11-25T00:00:00Z"
+
+# At most this many posts per run; the rest follow in the next runs, oldest first.
+max_per_run: 3
+
+releases:
+  # The repositories whose releases are announced, and how a post names them.
+  repositories:
+    - repo: overpressure/overpressure
+      name: overpressure
+  # Also every headset's repository (see headsets), so that a new headset's releases need no change here.
+  headsets: true
+  # Betas and other pre-releases too.
+  prereleases: true
+
+headsets:
+  # A public, unarchived repository of this organization with a headset.json (not a template) is a headset.
+  organization: overpressure
+  # Announce a headset when its repository appears.
+  announce: true
+
+# The posts, in the small Markdown the pinned texts use, with $placeholders. A line whose placeholder is
+# empty is left out.
+texts:
+  release: texts/release.md
+  headset: texts/headset.md

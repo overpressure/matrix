@@ -1,0 +1,32 @@
+# The overpressure space on Matrix: the space itself, where the icons come from, and the order of its rooms.
+# What every room shares is in defaults.yaml, the people's levels in people.yaml, each room in rooms/<key>.yaml.
+
+# The server the space and its rooms' addresses live on, and its client API.
+server: matrix.org
+homeserver: https://matrix-client.matrix.org
+
+# The icons: <this address><icon>.png, 512 x 512 (overpressure/brand's matrix/, the artwork's one home).
+icons: https://raw.githubusercontent.com/overpressure/brand/main/matrix/
+
+space:
+  alias: "#overpressure:matrix.org"
+  name: overpressure
+  topic: >-
+    Linux and a SteamOS-compatible userspace for standalone VR headsets, on Valve's Steam Frame kernel.
+    Code and issues: github.com/overpressure
+  icon: space
+  join: public
+  history_visibility: world_readable
+  guest_access: forbidden
+  # The server's public room directory (only with --directory: matrix.org refuses most accounts).
+  listed: true
+
+# The rooms, in their order in the space: each is rooms/<key>.yaml.
+rooms:
+  - general
+  - announcements
+  - help
+  - phoenix
+  - hollywood
+  - dev
+  - offtopic

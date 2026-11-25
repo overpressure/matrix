@@ -1,0 +1,53 @@
+# Post overpressure's releases and new headsets to the Announcements room (config/announcements.yaml), each
+# once: every half hour, or right away when a release workflow sends this repository the event "announce".
+# By hand it's a dry run unless "apply" is ticked. At most max_per_run posts go out per run.
+#
+# The bot's token is the environment matrix's secret MATRIX_ACCESS_TOKEN, as for the Space workflow. GitHub
+# is only read (public repositories), with this workflow's own token for the rate limit.
+name: Announce
+on:
+  schedule:
+    - cron: "7,37 * * * *"
+  repository_dispatch:
+    types: [announce]
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: "Post (unticked: only list what would be posted)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+# One run at a time: a second one waits and then finds the first one's posts in the room.
+concurrency:
+  group: announce
+  cancel-in-progress: false
+
+jobs:
+  announce:
+    if: github.repository == 'overpressure/matrix'
+    runs-on: ubuntu-latest
+    environment: matrix
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@18d369b23da25a81e9458561248e1aafff6a70fa # v10.3.1
+        with:
+          version: "0.13.4" # overpressure's
+      - run: uv sync --locked
+      - name: Announce
+        env:
+          MATRIX_ACCESS_TOKEN: ${{ secrets.MATRIX_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+          EVENT: ${{ github.event_name }}
+          APPLY: ${{ inputs.apply }}
+        run: |
+          args=(--summary "$GITHUB_STEP_SUMMARY")
+          case "$EVENT" in
+            schedule|repository_dispatch) args+=(--apply) ;;
+            workflow_dispatch) [ "$APPLY" != true ] || args+=(--apply) ;;
+            *) echo "::error::not run by $EVENT"; exit 1 ;;
+          esac
+          uv run --locked python -m matrix_space.announce "${args[@]}"

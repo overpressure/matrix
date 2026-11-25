@@ -1,0 +1,9 @@
+# Building overpressure.
+name: Development
+alias: "#overpressure-dev:matrix.org"
+topic: >-
+  Building overpressure: the kernel, the packages, the installer, a new headset. CONTRIBUTING.md and
+  GOVERNANCE.md first; decisions happen in issues and pull requests
+icon: dev
+also: [dev, development, developers, contributing]
+pin: texts/development.md

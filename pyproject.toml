@@ -1,0 +1,59 @@
+[project]
+name = "overpressure-matrix"
+version = "0"
+license = {text = "Unlicense"}
+description = "overpressure's Matrix space, its rooms and their settings, made to match config/ by a workflow"
+readme = "README.md"
+requires-python = ">=3.12"
+# The settings are YAML: the one package beyond the standard library.
+dependencies = ["pyyaml==6.0.3"]
+
+# Development: uv, ruff and ty, the same pins as overpressure's.
+[dependency-groups]
+dev = [
+    "ruff==0.17.4",
+    "ty==0.0.98",
+]
+
+[tool.uv]
+required-version = ">=0.9"
+# Not installed as a package: python -m matrix_space runs from the repository.
+package = false
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+[tool.ruff.lint]
+# Every rule, as in overpressure; what is off conflicts with another rule or the formatter.
+select = ["ALL"]
+ignore = [
+    # Incompatible with D211 and D212, which ruff keeps.
+    "D203",
+    "D213",
+    # The formatter places trailing commas.
+    "COM812",
+    # The tests are unittest, whose assertion methods report what differed.
+    "PT009",
+    "PT027",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests: their names say what they check; their expected values are literals.
+"tests/**" = ["D101", "D102", "D105", "D107", "ANN201", "ANN204", "PLR2004", "S101", "SLF001"]
+# A command-line program: print is its output.
+"matrix_space/**" = ["T201"]
+
+[tool.ruff.lint.flake8-copyright]
+notice-rgx = "SPDX-License-Identifier: "
+
+[tool.ruff.lint.isort]
+known-first-party = ["matrix_space"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+
+[tool.ty.environment]
+python-version = "3.12"
+
+[tool.ty.src]
+include = ["matrix_space", "tests"]

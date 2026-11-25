@@ -1,0 +1,39 @@
+# What every room has, unless its own file in rooms/ says otherwise (a room's power_levels are merged over these).
+
+# public: anyone may join. space: only the space's members (Element then treats the room as private and asks
+# for encryption, so every room is public).
+join: public
+# world_readable: people read before joining, and links to messages work.
+history_visibility: world_readable
+guest_access: forbidden
+# The server's public room directory (only with --directory: matrix.org refuses most accounts).
+listed: false
+# Suggested in the space: Element offers to join it.
+suggested: false
+
+# Who may do what: a power level from 0 (everyone) to 100 (admin). 50 is a moderator, 25 a headset's or SoC's
+# team. The levels of the people themselves are in people.yaml.
+power_levels:
+  users_default: 0
+  events_default: 0 # send messages, reactions, replies, threads
+  state_default: 50
+  invite: 50 # public rooms need no invitations; members inviting strangers is a spam route
+  kick: 50
+  ban: 50
+  redact: 50 # remove others' messages
+  notifications:
+    room: 50 # @room
+  events:
+    m.room.name: 50
+    m.room.topic: 50
+    m.room.avatar: 50
+    m.room.pinned_events: 50
+    m.room.join_rules: 100
+    m.room.history_visibility: 100
+    m.room.canonical_alias: 100
+    m.room.power_levels: 100
+    m.room.server_acl: 100
+    m.room.tombstone: 100
+    m.room.encryption: 100
+    im.vector.modular.widgets: 100
+    m.space.parent: 100
